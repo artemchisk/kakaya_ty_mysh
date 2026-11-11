@@ -288,7 +288,7 @@ async function createPiterShareCard(){
  ctx.strokeStyle="#c9b995";ctx.lineWidth=4;ctx.strokeRect(540-w/2,530+(maxH-h)/2,w,h);
  const description=$("piter-result").querySelector(".piter-description").textContent;
  ctx.fillStyle="#4d4739";ctx.font="27px Georgia";
- const words=description.trim().split(/\\s+/);let line="",lines=[];
+ const words=description.trim().split(/\s+/);let line="",lines=[];
  for(const word of words){const test=line?line+" "+word:word;if(line&&ctx.measureText(test).width>820){lines.push(line);line=word}else line=test}
  if(line)lines.push(line);
  const maxLines=8,visible=lines.slice(0,maxLines);

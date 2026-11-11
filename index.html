@@ -46,7 +46,7 @@
         <article class="result-card"><div class="class-emblem" id="class-emblem" aria-hidden="true"></div><div class="kicker">Твой класс</div><h3 id="class-name"></h3><p id="class-desc"></p></article>
       </div>
       <p class="result-note" id="result-note"></p>
-      <div class="similar-results" id="similar-results"><div class="similar-group"><h3>Похожие расы</h3><p class="similar-intro">От самого близкого совпадения к менее выраженному.</p><div id="race-ranking"></div></div><div class="similar-group"><h3>Близкие классы</h3><p class="similar-intro">Какие роли тоже подходят твоим ответам.</p><div id="class-ranking"></div></div></div>
+      <div class="similar-results" id="similar-results"><div class="similar-group"><h3>Похожие расы</h3><p class="similar-intro">Два ближайших совпадения после твоего результата.</p><div id="race-ranking"></div></div><div class="similar-group"><h3>Близкие классы</h3><p class="similar-intro">Два класса, которые тоже хорошо подходят твоим ответам.</p><div id="class-ranking"></div></div></div>
       <div class="ornament">❧ ✦ ❧</div>
       <div class="actions"><button class="btn secondary" id="restart">Пройти ещё раз</button><button class="btn" id="share">Поделиться результатом</button></div>
       <div class="small">Результат — отправная точка для персонажа, а не строгая характеристика личности.</div>
@@ -203,7 +203,7 @@ function compute(){
 }
 $("start").onclick=()=>{show("quiz");render()};$("back").onclick=()=>{if(current>0){current--;render()}};
 $("next").onclick=()=>{if(chosen[current]===null)return;if(current<questions.length-1){current++;render()}else finish()};
-function renderRanking(targetId,items){const target=$(targetId);target.innerHTML="";items.forEach((item,index)=>{const row=document.createElement("div");row.className="similar-row";const rank=document.createElement("span");rank.className="similar-rank";rank.textContent=index+1+".";const name=document.createElement("span");name.className="similar-name";name.textContent=item.name;const score=document.createElement("span");score.className="similar-score";score.textContent="индекс "+item.z.toFixed(2);row.append(rank,name,score);target.appendChild(row)});}
+function renderRanking(targetId,items){const target=$(targetId);target.innerHTML="";items.slice(1,3).forEach((item,index)=>{const row=document.createElement("div");row.className="similar-row";const rank=document.createElement("span");rank.className="similar-rank";rank.textContent=index+2+".";const name=document.createElement("span");name.className="similar-name";name.textContent=item.name;const score=document.createElement("span");score.className="similar-score";score.textContent="индекс "+item.z.toFixed(2);row.append(rank,name,score);target.appendChild(row)});}
 function finish(){
  preparedCardFile=null;if(preparedCardUrl){URL.revokeObjectURL(preparedCardUrl);preparedCardUrl=null}$("share-tools").classList.add("hidden");$("share").classList.remove("hidden");$("share").disabled=false;$("share").textContent="Подготовить карточку";
  const result=compute(),r=races[result.race],c=classes[result.klass];

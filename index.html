@@ -46,7 +46,8 @@
       <p class="photo-credit">Фото: <a href="https://commons.wikimedia.org/wiki/File:House_mouse_(Mus_musculus)_2745.jpg" target="_blank" rel="noopener" style="color:var(--moss)">Ahunt / Wikimedia Commons</a>, лицензия CC0 1.0</p>
       <p class="piter-description">Ты — Питерская мышь. Тебя не пугают ни ветер с Невы, ни внезапный дождь, ни прогноз «облачно, возможны осадки» на ближайшие девять месяцев. Ты умеешь находить уют там, где другие замечают сырость, а слово «парадная» звучит для тебя естественнее, чем «подъезд». Твой главный талант — сохранять достоинство, даже когда зонтик выворачивает наизнанку. Ты не ищешь приключений: они сами находят тебя по дороге за шавермой. А если кто-то спросит, почему ты не уезжаешь, ты только вздохнёшь: «Ну а куда я поеду?»</p>
       <div class="ornament">❧ ✦ ❧</div>
-      <div class="actions"><button class="btn secondary" id="piter-restart">Пройти обычный тест</button></div>
+      <div class="actions"><button class="btn secondary" id="piter-restart">Пройти обычный тест</button><button class="btn" id="piter-share">Поделиться результатом</button></div>
+      <div id="piter-share-tools" class="share-tools hidden"><img id="piter-share-preview" class="share-preview" alt="Карточка результата «Питерская мышь»"><div class="actions"><button class="btn" id="piter-native-share">Поделиться карточкой</button><a class="btn secondary" id="piter-download" download="piterskaya-mysh.png">Сохранить картинку</a></div><p class="share-status" id="piter-share-status">Карточка готова к отправке или сохранению.</p></div>
       <div class="small">Питерская мышь — вне классификации Королевства Тихого Шелеста.</div>
     </section>
     <section id="quiz" class="hidden">
@@ -270,5 +271,42 @@ async function createShareCard(){
 }
 $("share").onclick=async()=>{const button=$("share");button.disabled=true;button.textContent="Готовим карточку…";try{await createShareCard()}catch(e){$("share-status").textContent="Не удалось подготовить картинку. Попробуй ещё раз или обнови страницу.";button.disabled=false;button.textContent="Подготовить карточку"}};
 $("native-share").onclick=async()=>{if(!preparedCardFile)return;const payload={files:[preparedCardFile],title:"Мой результат — Какая ты мышь?",text:"Мой результат теста «Какая ты мышь?» — "+$("race-name").textContent+" и "+$("class-name").textContent+". "+location.href};if(navigator.share&&navigator.canShare&&navigator.canShare({files:payload.files})){try{await navigator.share(payload)}catch(e){if(e.name!=="AbortError")$("share-status").textContent="Не получилось открыть меню отправки. Сохрани картинку и добавь её в историю вручную."}}else{$("share-status").textContent="Браузер не поддерживает отправку картинки напрямую. Сохрани её кнопкой ниже и добавь в историю вручную.";if(navigator.clipboard?.writeText)navigator.clipboard.writeText(payload.text).catch(()=>{})}};
+let piterCardFile=null,piterCardUrl=null;
+async function createPiterShareCard(){
+ const photo=$("piter-result").querySelector(".piter-photo");
+ const img=await new Promise((resolve,reject)=>{const copy=new Image();copy.crossOrigin="anonymous";copy.onload=()=>resolve(copy);copy.onerror=()=>reject(new Error("Не удалось загрузить фотографию для карточки"));copy.src=photo.src});
+ const canvas=document.createElement("canvas");canvas.width=1080;canvas.height=1920;const ctx=canvas.getContext("2d");
+ ctx.fillStyle="#26382d";ctx.fillRect(0,0,1080,1920);
+ ctx.strokeStyle="#b18a4d";ctx.lineWidth=5;ctx.strokeRect(42,42,996,1836);ctx.strokeStyle="#e7dcc3";ctx.lineWidth=2;ctx.strokeRect(58,58,964,1804);
+ ctx.fillStyle="#f2ead8";ctx.fillRect(88,100,904,1720);
+ ctx.textAlign="center";ctx.fillStyle="#71805a";ctx.font="bold 30px Georgia";ctx.fillText("КОРОЛЕВСТВО ТИХОГО ШЕЛЕСТА",540,190);
+ ctx.fillStyle="#26382d";ctx.font="58px Georgia";ctx.fillText("КАКАЯ ТЫ МЫШЬ?",540,290);
+ ctx.fillStyle="#b18a4d";ctx.font="bold 38px Georgia";ctx.fillText("ОСОБЫЙ РЕЗУЛЬТАТ",540,365);
+ ctx.fillStyle="#26382d";ctx.font="64px Georgia";ctx.fillText("ПИТЕРСКАЯ МЫШЬ",540,470);
+ const maxW=720,maxH=570,scale=Math.min(maxW/img.width,maxH/img.height),w=img.width*scale,h=img.height*scale;
+ ctx.drawImage(img,540-w/2,530+(maxH-h)/2,w,h);
+ ctx.strokeStyle="#c9b995";ctx.lineWidth=4;ctx.strokeRect(540-w/2,530+(maxH-h)/2,w,h);
+ const description=$("piter-result").querySelector(".piter-description").textContent;
+ ctx.fillStyle="#4d4739";ctx.font="27px Georgia";
+ const words=description.trim().split(/\\s+/);let line="",lines=[];
+ for(const word of words){const test=line?line+" "+word:word;if(line&&ctx.measureText(test).width>820){lines.push(line);line=word}else line=test}
+ if(line)lines.push(line);
+ const maxLines=8,visible=lines.slice(0,maxLines);
+ if(lines.length>maxLines){let last=visible[maxLines-1];while(last&&ctx.measureText(last+"…").width>820)last=last.slice(0,last.lastIndexOf(" "));visible[maxLines-1]=last+"…"}
+ visible.forEach((part,i)=>ctx.fillText(part,540,1160+i*39,820));
+ ctx.fillStyle="#716b5b";ctx.font="24px Georgia";ctx.fillText("Пройди тест и узнай своё место в Шелесте",540,1665);
+ ctx.font="22px Arial";ctx.fillText("artemchisk.github.io/kakaya_ty_mysh",540,1720);
+ ctx.font="17px Arial";ctx.fillText("Фото: Ahunt / Wikimedia Commons · CC0 1.0",540,1770);
+ const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/png"));
+ if(!blob)throw new Error("Не удалось создать изображение");
+ piterCardFile=new File([blob],"piterskaya-mysh.png",{type:"image/png"});
+ if(piterCardUrl)URL.revokeObjectURL(piterCardUrl);
+ piterCardUrl=URL.createObjectURL(blob);
+ $("piter-share-preview").src=piterCardUrl;$("piter-download").href=piterCardUrl;
+ $("piter-share-tools").classList.remove("hidden");$("piter-share").classList.add("hidden");
+ $("piter-share-status").textContent="Карточка готова. Нажми «Поделиться карточкой» или сохрани изображение.";
+}
+$("piter-share").onclick=async()=>{const button=$("piter-share");button.disabled=true;button.textContent="Готовим карточку…";try{await createPiterShareCard()}catch(e){$("piter-share-status").textContent="Не удалось подготовить карточку с фотографией. Попробуй ещё раз или сохрани фото со страницы отдельно.";button.disabled=false;button.textContent="Поделиться результатом"}};
+$("piter-native-share").onclick=async()=>{if(!piterCardFile)return;const payload={files:[piterCardFile],title:"Я — Питерская мышь!",text:"Я прошёл тест «Какая ты мышь?» и получил особый результат: Питерская мышь! "+location.href};if(navigator.share&&navigator.canShare&&navigator.canShare({files:payload.files})){try{await navigator.share(payload)}catch(e){if(e.name!=="AbortError")$("piter-share-status").textContent="Не получилось открыть меню отправки. Сохрани картинку и добавь её в историю вручную."}}else{$("piter-share-status").textContent="Браузер не поддерживает отправку картинки напрямую. Сохрани её кнопкой ниже.";if(navigator.clipboard?.writeText)navigator.clipboard.writeText(payload.text).catch(()=>{})}};
 </script>
 </body></html>

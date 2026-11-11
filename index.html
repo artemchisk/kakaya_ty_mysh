@@ -7,13 +7,13 @@
 <title>Какая ты мышь? — Королевство Тихого Шелеста</title>
 <style>
 :root{--forest:#26382d;--forest2:#344b3a;--moss:#71805a;--paper:#f2ead8;--paper2:#e7dcc3;--ink:#302c22;--muted:#716b5b;--gold:#b18a4d;--line:#c9b995}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--ink);font-family:Georgia,"Times New Roman",serif;background:radial-gradient(ellipse at 50% 0%,#65765a 0,#354938 42%,#202e26 100%);padding:24px 14px}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--ink);font-family:Georgia,"Times New Roman",serif;background:linear-gradient(180deg,rgba(20,31,24,.40),rgba(20,31,24,.72)),url("images/home-background.webp") center/cover fixed;background-color:#202e26;padding:24px 14px}body.quiz-mode{background-image:linear-gradient(180deg,rgba(20,31,24,.48),rgba(20,31,24,.68)),url("images/question-background.webp")}
 .shell{width:min(760px,100%);margin:0 auto}.brand{color:#e8dfc9;text-align:center;font-size:13px;letter-spacing:.18em;text-transform:uppercase;margin:6px 0 18px}.panel{position:relative;background:linear-gradient(135deg,rgba(255,255,255,.26),transparent 22%),var(--paper);border:1px solid #c7b58f;outline:1px solid rgba(224,203,160,.35);outline-offset:5px;border-radius:5px;padding:clamp(22px,5vw,48px);padding-top:clamp(42px,5vw,48px);box-shadow:0 18px 55px #101b16aa}
 .panel:before,.panel:after{content:"✦";position:absolute;color:var(--gold);font-size:19px}.panel:before{top:13px;left:15px}.panel:after{bottom:13px;right:15px}
 .kicker{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--moss);font-weight:bold}.title{font-size:clamp(34px,7vw,56px);line-height:1.02;margin:12px 0;color:var(--forest);font-weight:normal}.subtitle{font-size:18px;line-height:1.55;color:#57513f;max-width:570px}.ornament{text-align:center;color:var(--gold);font-size:22px;margin:22px 0}.btn{border:1px solid var(--forest);background:var(--forest);color:#f6efdf;padding:13px 22px;font: bold 15px Georgia,serif;letter-spacing:.04em;border-radius:3px;cursor:pointer;transition:.15s}.btn:hover{background:var(--forest2);transform:translateY(-1px)}.btn:disabled{opacity:.35;cursor:not-allowed;transform:none}.btn.secondary{background:transparent;color:var(--forest)}.actions{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;margin-top:25px}.actions .right{margin-left:auto}
 .progress-wrap{margin-bottom:24px}.progress-meta{display:flex;justify-content:space-between;color:var(--muted);font:12px Arial,sans-serif;margin-bottom:8px}.track{height:5px;background:#d8cbb0;border-radius:10px;overflow:hidden}.fill{height:100%;background:var(--moss);transition:width .2s}
 .question{font-size:clamp(23px,4vw,31px);font-weight:normal;line-height:1.2;margin:0 0 22px;color:var(--forest)}.options{display:grid;gap:10px}.option{display:flex;gap:13px;align-items:flex-start;padding:14px 15px;border:1px solid var(--line);background:#f8f3e8;border-radius:3px;cursor:pointer;line-height:1.4;font-size:16px;transition:.15s}.option:hover{border-color:var(--moss);background:#fffaf0}.option.selected{border-color:var(--forest);background:#e4e8d8;box-shadow:inset 3px 0 var(--moss)}.letter{flex:0 0 25px;width:25px;height:25px;border:1px solid #b8a783;border-radius:50%;display:grid;place-items:center;font:13px Georgia,serif;color:var(--forest);margin-top:1px}.option.selected .letter{background:var(--forest);color:#fff}
-.hidden{display:none!important}.result-head{text-align:center}.result-title{font-size:clamp(32px,6vw,46px);font-weight:normal;color:var(--forest);margin:9px 0}.result-sub{color:var(--muted);font-style:italic}.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:25px 0}.result-card{background:#e9e1ce;border:1px solid var(--line);padding:20px 16px;text-align:center}.result-card .symbol{font-size:35px;color:var(--moss)}.result-card h3{font-size:23px;font-weight:normal;margin:8px 0;color:var(--forest)}.result-card p{font-size:15px;line-height:1.45;margin:0;color:#5e5747}.result-note{font-size:16px;line-height:1.55;text-align:center;max-width:570px;margin:10px auto 0}.small{font:12px Arial,sans-serif;color:var(--muted);text-align:center;margin-top:20px}
+.hidden{display:none!important}.result-head{text-align:center}.result-title{font-size:clamp(32px,6vw,46px);font-weight:normal;color:var(--forest);margin:9px 0}.result-sub{color:var(--muted);font-style:italic}.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:25px 0}.result-card{background:#e9e1ce;border:1px solid var(--line);padding:20px 16px;text-align:center}.result-card .symbol{font-size:35px;color:var(--moss)}.race-portrait{display:block;width:132px;height:176px;object-fit:cover;object-position:center;border:1px solid var(--line);margin:0 auto 12px;box-shadow:0 5px 16px #302c2230}.class-emblem{width:132px;height:132px;margin:20px auto 24px;background:var(--gold);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain;filter:drop-shadow(0 3px 2px #302c2230)}.result-card h3{font-size:23px;font-weight:normal;margin:8px 0;color:var(--forest)}.result-card p{font-size:15px;line-height:1.45;margin:0;color:#5e5747}.result-note{font-size:16px;line-height:1.55;text-align:center;max-width:570px;margin:10px auto 0}.small{font:12px Arial,sans-serif;color:var(--muted);text-align:center;margin-top:20px}
 @media(max-width:520px){body{padding:17px 12px}.result-grid{grid-template-columns:1fr}.actions{gap:8px}.btn{flex:1}.actions .right{margin-left:0}}
 </style>
 </head>
@@ -28,7 +28,7 @@
       <div class="ornament">❧ ✦ ❧</div>
       <p class="subtitle">Здесь нет правильных ответов. Выбирай то, что ближе именно тебе, а не то, что кажется самым героическим.</p>
       <div class="actions"><button class="btn" id="start">Начать путешествие</button></div>
-      <div class="small">18 вопросов · около 4 минут · без регистрации</div>
+      <div class="small">18 вопросов · около 4 минут · без регистрации<br><a href="credits.html" style="color:var(--moss)">Авторы иллюстраций и лицензии</a></div>
     </section>
     <section id="quiz" class="hidden">
       <div class="progress-wrap"><div class="progress-meta"><span id="counter">Вопрос 1 из 18</span><span id="percent">6%</span></div><div class="track"><div class="fill" id="progress"></div></div></div>
@@ -40,8 +40,8 @@
     <section id="result" class="hidden">
       <div class="result-head"><div class="kicker">Твоё место в Шелесте</div><h2 class="result-title">Твой характер — часть этого мира</h2><p class="result-sub">По твоим ответам тебе ближе всего…</p></div>
       <div class="result-grid">
-        <article class="result-card"><div class="symbol" id="race-symbol">❧</div><div class="kicker">Твоя раса</div><h3 id="race-name"></h3><p id="race-desc"></p></article>
-        <article class="result-card"><div class="symbol" id="class-symbol">✦</div><div class="kicker">Твой класс</div><h3 id="class-name"></h3><p id="class-desc"></p></article>
+        <article class="result-card"><img class="race-portrait" id="race-portrait" alt=""><div class="kicker">Твоя раса</div><h3 id="race-name"></h3><p id="race-desc"></p></article>
+        <article class="result-card"><div class="class-emblem" id="class-emblem" aria-hidden="true"></div><div class="kicker">Твой класс</div><h3 id="class-name"></h3><p id="class-desc"></p></article>
       </div>
       <p class="result-note" id="result-note"></p>
       <div class="ornament">❧ ✦ ❧</div>
@@ -73,6 +73,12 @@ const classes={
 "Чародей":{symbol:"✧",desc:"В тебе есть внутренняя искра, которую не нужно объяснять чужими правилами. Ты доверяешь интуиции и раскрываешь собственный необычный потенциал."},
 "Колдун":{symbol:"☾",desc:"Тебя притягивают тайны, рискованные знания и сила, у которой есть цена. Ты умеешь искать возможности там, куда другие не решаются заглянуть."},
 "Волшебник":{symbol:"⌘",desc:"Ты веришь, что понимание открывает двери. Любознательность, терпение и стремление докопаться до устройства вещей — твои главные инструменты."}
+};
+const raceImages={
+"Полевая мышь":"field-mouse.webp","Домовая мышь":"house-mouse.webp","Подземная мышь":"underground-mouse.webp","Крыса":"rat.webp","Буроспинная ласка":"brown-backed-weasel.webp","Белая ласка":"white-weasel.webp","Длиннохвостая ласка":"long-tailed-weasel.webp"
+};
+const classIcons={
+"Варвар":"barbarian.svg","Бард":"bard-harp.svg","Жрец":"cleric-symbol.svg","Друид":"druid-leaf.svg","Воин":"fighter-swords.svg","Монах":"monk-fist.svg","Паладин":"paladin-winged-sword.svg","Следопыт":"ranger-bow.svg","Плут":"rogue-daggers.svg","Чародей":"sorcerer-crystal.svg","Колдун":"warlock-eye.svg","Волшебник":"wizard-book.svg"
 };
 const questions=[
 {block:"Где твоё место?",q:"Тебе предложили выбрать жильё в новом поселении. Где поселишься?",a:[
@@ -168,7 +174,7 @@ const questions=[
 ];
 let current=0;const chosen=Array(questions.length).fill(null);
 const $=id=>document.getElementById(id);
-function show(id){["intro","quiz","result"].forEach(x=>$(x).classList.toggle("hidden",x!==id))}
+function show(id){["intro","quiz","result"].forEach(x=>$(x).classList.toggle("hidden",x!==id));document.body.classList.toggle("quiz-mode",id==="quiz") }
 function render(){
  const q=questions[current];$("counter").textContent="Вопрос "+(current+1)+" из "+questions.length;
  $("percent").textContent=Math.round((current+1)/questions.length*100)+"%";$("progress").style.width=((current+1)/questions.length*100)+"%";
@@ -194,8 +200,8 @@ $("start").onclick=()=>{show("quiz");render()};$("back").onclick=()=>{if(current
 $("next").onclick=()=>{if(chosen[current]===null)return;if(current<questions.length-1){current++;render()}else finish()};
 function finish(){
  const result=compute(),r=races[result.race],c=classes[result.klass];
- $("race-name").textContent=result.race;$("race-desc").textContent=r.desc;$("race-symbol").textContent=r.symbol;
- $("class-name").textContent=result.klass;$("class-desc").textContent=c.desc;$("class-symbol").textContent=c.symbol;
+ $("race-name").textContent=result.race;$("race-desc").textContent=r.desc;$("race-portrait").src="images/"+raceImages[result.race];$("race-portrait").alt=result.race;
+ $("class-name").textContent=result.klass;$("class-desc").textContent=c.desc;const emblem="images/class-icons/"+classIcons[result.klass];$("class-emblem").style.webkitMaskImage="url(\""+emblem+"\")";$("class-emblem").style.maskImage="url(\""+emblem+"\")";
  $("result-note").textContent="В тебе сочетаются черты "+result.race.toLowerCase()+" и путь "+result.klass.toLowerCase()+". В Шелесте это только начало истории: каким станет твой герой, решишь уже ты.";
  show("result");
 }

@@ -15,6 +15,7 @@
 .question{font-size:clamp(23px,4vw,31px);font-weight:normal;line-height:1.2;margin:0 0 22px;color:var(--forest)}.options{display:grid;gap:10px}.option{display:flex;gap:13px;align-items:flex-start;padding:14px 15px;border:1px solid var(--line);background:#f8f3e8;border-radius:3px;cursor:pointer;line-height:1.4;font-size:16px;transition:.15s}.option:hover{border-color:var(--moss);background:#fffaf0}.option.selected{border-color:var(--forest);background:#e4e8d8;box-shadow:inset 3px 0 var(--moss)}.letter{flex:0 0 25px;width:25px;height:25px;border:1px solid #b8a783;border-radius:50%;display:grid;place-items:center;font:13px Georgia,serif;color:var(--forest);margin-top:1px}.option.selected .letter{background:var(--forest);color:#fff}
 .hidden{display:none!important}.result-head{text-align:center}.result-title{font-size:clamp(32px,6vw,46px);font-weight:normal;color:var(--forest);margin:9px 0}.result-sub{color:var(--muted);font-style:italic}.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:25px 0}.result-card{background:#e9e1ce;border:1px solid var(--line);padding:20px 16px;text-align:center}.result-card .symbol{font-size:35px;color:var(--moss)}.race-portrait{display:block;width:132px;height:176px;object-fit:cover;object-position:center;border:1px solid var(--line);margin:0 auto 12px;box-shadow:0 5px 16px #302c2230}.class-emblem{width:132px;height:132px;margin:20px auto 24px;background:var(--gold);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain;filter:drop-shadow(0 3px 2px #302c2230)}.result-card h3{font-size:23px;font-weight:normal;margin:8px 0;color:var(--forest)}.result-card p{font-size:15px;line-height:1.45;margin:0;color:#5e5747}.result-note{font-size:16px;line-height:1.55;text-align:center;max-width:570px;margin:10px auto 0}.small{font:12px Arial,sans-serif;color:var(--muted);text-align:center;margin-top:20px}
 .similar-results{margin:24px 0 8px;padding:18px;background:#f8f3e8;border:1px solid var(--line)}.similar-results h3{font:normal 21px Georgia,serif;color:var(--forest);margin:0 0 5px}.similar-results .similar-intro{font:13px Arial,sans-serif;color:var(--muted);margin:0 0 14px}.similar-group+.similar-group{margin-top:18px}.similar-row{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:9px;align-items:center;padding:7px 0;border-top:1px solid #d8cbb0;font-size:14px}.similar-rank{color:var(--muted);font:14px Georgia,serif;text-align:center}.similar-name{color:var(--ink)}.similar-score{color:var(--muted);font:12px Arial,sans-serif;white-space:nowrap}.similar-row:first-of-type .similar-name{font-weight:bold;color:var(--forest)}
+.piter-photo{display:block;width:min(100%,430px);max-height:440px;object-fit:cover;margin:22px auto 6px;border:1px solid var(--line);box-shadow:0 5px 18px #302c2230}.photo-credit{font:11px Arial,sans-serif;color:var(--muted);text-align:center;margin:6px auto 20px}.piter-description{font-size:17px;line-height:1.65;color:#4d4739;max-width:650px;margin:20px auto;text-align:left}
 .share-tools{margin-top:18px;padding:16px;background:#e9e1ce;border:1px solid var(--line);text-align:center}.share-preview{display:block;width:min(100%,260px);height:auto;margin:0 auto 14px;border:1px solid var(--line);box-shadow:0 5px 18px #302c2230}.share-tools .actions{justify-content:center;margin-top:12px}.share-tools .btn{display:inline-block;text-decoration:none}.share-status{font:13px Arial,sans-serif;line-height:1.45;color:var(--muted);margin:10px auto 0;max-width:440px}
 @media(max-width:520px){body{padding:17px 12px}.result-grid{grid-template-columns:1fr}.actions{gap:8px}.btn{flex:1}.actions .right{margin-left:0}}
 </style>
@@ -31,6 +32,22 @@
       <p class="subtitle">Здесь нет правильных ответов. Выбирай то, что ближе именно тебе, а не то, что кажется самым героическим.</p>
       <div class="actions"><button class="btn" id="start">Начать путешествие</button></div>
       <div class="small">18 вопросов · около 4 минут · без регистрации<br><a href="credits.html" style="color:var(--moss)">Авторы иллюстраций и лицензии</a></div>
+    </section>
+    <section id="city-check" class="hidden">
+      <div class="kicker">Прежде чем отправиться в Шелест…</div>
+      <h1 class="title">Вы из Питера?</h1>
+      <p class="subtitle">Это очень важный вопрос. От ответа зависит, придётся ли тебе проходить обычное испытание или сразу открывать окно в культурную столицу.</p>
+      <div class="ornament">❧ ✦ ❧</div>
+      <div class="actions"><button class="btn" id="piter-yes">Да, конечно</button><button class="btn secondary" id="piter-no">Нет, я из другого места</button></div>
+    </section>
+    <section id="piter-result" class="hidden">
+      <div class="result-head"><div class="kicker">Особый результат</div><h2 class="result-title">Питерская мышь</h2><p class="result-sub">Тест окончен. Дальше можно не спрашивать.</p></div>
+      <img class="piter-photo" src="https://upload.wikimedia.org/wikipedia/commons/8/82/House_mouse_%28Mus_musculus%29_2745.jpg" alt="Настоящая домовая мышь — почётная Питерская мышь">
+      <p class="photo-credit">Фото: Ahunt / Wikimedia Commons, лицензия CC0 1.0</p>
+      <p class="piter-description">Ты — Питерская мышь. Тебя не пугают ни ветер с Невы, ни внезапный дождь, ни прогноз «облачно, возможны осадки» на ближайшие девять месяцев. Ты умеешь находить уют там, где другие замечают сырость, а слово «парадная» звучит для тебя естественнее, чем «подъезд». Твой главный талант — сохранять достоинство, даже когда зонтик выворачивает наизнанку. Ты не ищешь приключений: они сами находят тебя по дороге за шавермой. А если кто-то спросит, почему ты не уезжаешь, ты только вздохнёшь: «Ну а куда я поеду?»</p>
+      <div class="ornament">❧ ✦ ❧</div>
+      <div class="actions"><button class="btn secondary" id="piter-restart">Пройти обычный тест</button></div>
+      <div class="small">Питерская мышь — вне классификации Королевства Тихого Шелеста.</div>
     </section>
     <section id="quiz" class="hidden">
       <div class="progress-wrap"><div class="progress-meta"><span id="counter">Вопрос 1 из 18</span><span id="percent">6%</span></div><div class="track"><div class="fill" id="progress"></div></div></div>
@@ -178,7 +195,7 @@ const questions=[
 ];
 let current=0;const chosen=Array(questions.length).fill(null);
 const $=id=>document.getElementById(id);
-function show(id){["intro","quiz","result"].forEach(x=>$(x).classList.toggle("hidden",x!==id));document.body.classList.toggle("quiz-mode",id==="quiz") }
+function show(id){["intro","city-check","piter-result","quiz","result"].forEach(x=>$(x).classList.toggle("hidden",x!==id));document.body.classList.toggle("quiz-mode",id==="quiz") }
 function render(){
  const q=questions[current];$("counter").textContent="Вопрос "+(current+1)+" из "+questions.length;
  $("percent").textContent=Math.round((current+1)/questions.length*100)+"%";$("progress").style.width=((current+1)/questions.length*100)+"%";
@@ -201,7 +218,7 @@ function compute(){
  const raceRanking=ranking(r),classRanking=ranking(c);
  return {race:raceRanking[0].name,klass:classRanking[0].name,raceRanking,classRanking};
 }
-$("start").onclick=()=>{show("quiz");render()};$("back").onclick=()=>{if(current>0){current--;render()}};
+$("start").onclick=()=>show("city-check");$("piter-yes").onclick=()=>show("piter-result");$("piter-no").onclick=()=>{current=0;chosen.fill(null);show("quiz");render()};$("piter-restart").onclick=()=>{current=0;chosen.fill(null);show("intro")};$("back").onclick=()=>{if(current>0){current--;render()}};
 $("next").onclick=()=>{if(chosen[current]===null)return;if(current<questions.length-1){current++;render()}else finish()};
 function renderRanking(targetId,items){const target=$(targetId);target.innerHTML="";const winner=items[0];if(winner){const reference=document.createElement("div");reference.className="similar-intro";reference.textContent="1-е место — "+winner.name+": индекс "+winner.z.toFixed(2);reference.style.fontWeight="bold";reference.style.marginBottom="8px";target.appendChild(reference)}items.slice(1,3).forEach((item,index)=>{const row=document.createElement("div");row.className="similar-row";const rank=document.createElement("span");rank.className="similar-rank";rank.textContent=index+2+".";const name=document.createElement("span");name.className="similar-name";name.textContent=item.name;const score=document.createElement("span");score.className="similar-score";score.textContent="индекс "+item.z.toFixed(2);row.append(rank,name,score);target.appendChild(row)});}
 function finish(){

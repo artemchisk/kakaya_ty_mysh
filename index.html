@@ -229,12 +229,12 @@ async function createShareCard(){
  ctx.strokeStyle="#c9b995";ctx.lineWidth=4;ctx.strokeRect(540-pw/2,390+(maxH-ph)/2,pw,ph);
  ctx.fillStyle="#71805a";ctx.font="bold 28px Georgia";ctx.fillText("ТВОЯ РАСА",540,970);
  ctx.fillStyle="#26382d";ctx.font="54px Georgia";ctx.fillText(race,540,1035);
- function drawDescription(text,y,maxLines=3){ctx.fillStyle="#57513f";ctx.font="27px Georgia";const words=text.split(/\s+/);let line="",lines=[];for(const word of words){const test=line?line+" "+word:word;if(ctx.measureText(test).width>820&&line){lines.push(line);line=word}else line=test}if(line)lines.push(line);lines.slice(0,maxLines).forEach((part,i)=>ctx.fillText(part,540,y+i*36));}
- drawDescription(races[race].desc,1080,3);
+ function drawDescription(text,y,maxLines=4){ctx.fillStyle="#57513f";ctx.font="26px Georgia";const words=text.trim().split(/\s+/);let line="",lines=[];for(const word of words){const test=line?line+" "+word:word;if(line&&(test.length>46||ctx.measureText(test).width>800)){lines.push(line);line=word}else line=test}if(line)lines.push(line);const visible=lines.slice(0,maxLines);if(lines.length>maxLines){let last=visible[maxLines-1];while(last.length&&ctx.measureText(last+"…").width>800)last=last.slice(0,last.lastIndexOf(" "));visible[maxLines-1]=last+"…"}visible.forEach((part,i)=>ctx.fillText(part,540,y+i*34,820));}
+ drawDescription(races[race].desc,1075,4);
  const iconSize=112;ctx.drawImage(emblem,540-iconSize/2,1205,iconSize,iconSize);
  ctx.fillStyle="#71805a";ctx.font="bold 28px Georgia";ctx.fillText("ТВОЙ КЛАСС",540,1370);
  ctx.fillStyle="#26382d";ctx.font="54px Georgia";ctx.fillText(klass,540,1435);
- drawDescription(classes[klass].desc,1480,4);
+ drawDescription(classes[klass].desc,1480,5);
  ctx.fillStyle="#716b5b";ctx.font="25px Georgia";ctx.fillText("Пройди тест и узнай своё место в Шелесте",540,1735);
  ctx.font="23px Arial";ctx.fillText("artemchisk.github.io/kakaya_ty_mysh",540,1780);
  const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/png"));

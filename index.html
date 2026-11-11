@@ -229,7 +229,7 @@ async function createShareCard(){
  ctx.strokeStyle="#c9b995";ctx.lineWidth=4;ctx.strokeRect(540-pw/2,390+(maxH-ph)/2,pw,ph);
  ctx.fillStyle="#71805a";ctx.font="bold 28px Georgia";ctx.fillText("ТВОЯ РАСА",540,970);
  ctx.fillStyle="#26382d";ctx.font="54px Georgia";ctx.fillText(race,540,1035);
- function drawDescription(text,y,maxLines=3){ctx.fillStyle="#57513f";ctx.font="27px Georgia";const words=text.split(/\\s+/);let line="",lines=[];for(const word of words){const test=line?line+" "+word:word;if(ctx.measureText(test).width>820&&line){lines.push(line);line=word}else line=test}if(line)lines.push(line);lines.slice(0,maxLines).forEach((part,i)=>ctx.fillText(part,540,y+i*36));}
+ function drawDescription(text,y,maxLines=3){ctx.fillStyle="#57513f";ctx.font="27px Georgia";const words=text.split(/\s+/);let line="",lines=[];for(const word of words){const test=line?line+" "+word:word;if(ctx.measureText(test).width>820&&line){lines.push(line);line=word}else line=test}if(line)lines.push(line);lines.slice(0,maxLines).forEach((part,i)=>ctx.fillText(part,540,y+i*36));}
  drawDescription(races[race].desc,1080,3);
  const iconSize=112;ctx.drawImage(emblem,540-iconSize/2,1205,iconSize,iconSize);
  ctx.fillStyle="#71805a";ctx.font="bold 28px Georgia";ctx.fillText("ТВОЙ КЛАСС",540,1370);

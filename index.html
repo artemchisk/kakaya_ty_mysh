@@ -202,7 +202,9 @@ function finish(){
  const result=compute(),r=races[result.race],c=classes[result.klass];
  $("race-name").textContent=result.race;$("race-desc").textContent=r.desc;$("race-portrait").src="images/"+raceImages[result.race];$("race-portrait").alt=result.race;
  $("class-name").textContent=result.klass;$("class-desc").textContent=c.desc;const emblem="images/class-icons/"+classIcons[result.klass];$("class-emblem").style.webkitMaskImage="url(\""+emblem+"\")";$("class-emblem").style.maskImage="url(\""+emblem+"\")";
- $("result-note").textContent="В тебе сочетаются черты "+result.race.toLowerCase()+" и путь "+result.klass.toLowerCase()+". В Шелесте это только начало истории: каким станет твой герой, решишь уже ты.";
+ const raceGenitive={"Полевая мышь":"полевой мыши","Домовая мышь":"домовой мыши","Подземная мышь":"подземной мыши","Крыса":"крысы","Буроспинная ласка":"буроспинной ласки","Белая ласка":"белой ласки","Длиннохвостая ласка":"длиннохвостой ласки"};
+ const classGenitive={"Варвар":"варвара","Бард":"барда","Жрец":"жреца","Друид":"друида","Воин":"воина","Монах":"монаха","Паладин":"паладина","Следопыт":"следопыта","Плут":"плута","Чародей":"чародея","Колдун":"колдуна","Волшебник":"волшебника"};
+ $("result-note").textContent="В тебе сочетаются характер "+raceGenitive[result.race]+" и призвание "+classGenitive[result.klass]+". В Шелесте это только начало истории: каким станет твой герой, решишь уже ты.";
  show("result");
 }
 $("restart").onclick=()=>{current=0;chosen.fill(null);show("intro")};

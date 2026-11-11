@@ -14,6 +14,7 @@
 .progress-wrap{margin-bottom:24px}.progress-meta{display:flex;justify-content:space-between;color:var(--muted);font:12px Arial,sans-serif;margin-bottom:8px}.track{height:5px;background:#d8cbb0;border-radius:10px;overflow:hidden}.fill{height:100%;background:var(--moss);transition:width .2s}
 .question{font-size:clamp(23px,4vw,31px);font-weight:normal;line-height:1.2;margin:0 0 22px;color:var(--forest)}.options{display:grid;gap:10px}.option{display:flex;gap:13px;align-items:flex-start;padding:14px 15px;border:1px solid var(--line);background:#f8f3e8;border-radius:3px;cursor:pointer;line-height:1.4;font-size:16px;transition:.15s}.option:hover{border-color:var(--moss);background:#fffaf0}.option.selected{border-color:var(--forest);background:#e4e8d8;box-shadow:inset 3px 0 var(--moss)}.letter{flex:0 0 25px;width:25px;height:25px;border:1px solid #b8a783;border-radius:50%;display:grid;place-items:center;font:13px Georgia,serif;color:var(--forest);margin-top:1px}.option.selected .letter{background:var(--forest);color:#fff}
 .hidden{display:none!important}.result-head{text-align:center}.result-title{font-size:clamp(32px,6vw,46px);font-weight:normal;color:var(--forest);margin:9px 0}.result-sub{color:var(--muted);font-style:italic}.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:25px 0}.result-card{background:#e9e1ce;border:1px solid var(--line);padding:20px 16px;text-align:center}.result-card .symbol{font-size:35px;color:var(--moss)}.race-portrait{display:block;width:132px;height:176px;object-fit:cover;object-position:center;border:1px solid var(--line);margin:0 auto 12px;box-shadow:0 5px 16px #302c2230}.class-emblem{width:132px;height:132px;margin:20px auto 24px;background:var(--gold);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain;filter:drop-shadow(0 3px 2px #302c2230)}.result-card h3{font-size:23px;font-weight:normal;margin:8px 0;color:var(--forest)}.result-card p{font-size:15px;line-height:1.45;margin:0;color:#5e5747}.result-note{font-size:16px;line-height:1.55;text-align:center;max-width:570px;margin:10px auto 0}.small{font:12px Arial,sans-serif;color:var(--muted);text-align:center;margin-top:20px}
+.share-tools{margin-top:18px;padding:16px;background:#e9e1ce;border:1px solid var(--line);text-align:center}.share-preview{display:block;width:min(100%,260px);height:auto;margin:0 auto 14px;border:1px solid var(--line);box-shadow:0 5px 18px #302c2230}.share-tools .actions{justify-content:center;margin-top:12px}.share-tools .btn{display:inline-block;text-decoration:none}.share-status{font:13px Arial,sans-serif;line-height:1.45;color:var(--muted);margin:10px auto 0;max-width:440px}
 @media(max-width:520px){body{padding:17px 12px}.result-grid{grid-template-columns:1fr}.actions{gap:8px}.btn{flex:1}.actions .right{margin-left:0}}
 </style>
 </head>
@@ -47,6 +48,7 @@
       <div class="ornament">❧ ✦ ❧</div>
       <div class="actions"><button class="btn secondary" id="restart">Пройти ещё раз</button><button class="btn" id="share">Поделиться результатом</button></div>
       <div class="small">Результат — отправная точка для персонажа, а не строгая характеристика личности.</div>
+      <div id="share-tools" class="share-tools hidden"><img id="share-preview" class="share-preview" alt="Карточка результата теста"><div class="actions"><button class="btn" id="native-share">Поделиться карточкой</button><a class="btn secondary" id="download-card" download="kakaya-ty-mysh-result.png">Сохранить картинку</a></div><p class="share-status" id="share-status">Карточка готова. Её можно отправить или сохранить и добавить в историю.</p></div>
     </section>
   </main>
 </div>
@@ -199,6 +201,7 @@ function compute(){
 $("start").onclick=()=>{show("quiz");render()};$("back").onclick=()=>{if(current>0){current--;render()}};
 $("next").onclick=()=>{if(chosen[current]===null)return;if(current<questions.length-1){current++;render()}else finish()};
 function finish(){
+ preparedCardFile=null;if(preparedCardUrl){URL.revokeObjectURL(preparedCardUrl);preparedCardUrl=null}$("share-tools").classList.add("hidden");$("share").classList.remove("hidden");$("share").disabled=false;$("share").textContent="Подготовить карточку";
  const result=compute(),r=races[result.race],c=classes[result.klass];
  $("race-name").textContent=result.race;$("race-desc").textContent=r.desc;$("race-portrait").src="images/"+raceImages[result.race];$("race-portrait").alt=result.race;
  $("class-name").textContent=result.klass;$("class-desc").textContent=c.desc;const emblem="images/class-icons/"+classIcons[result.klass];$("class-emblem").style.webkitMaskImage="url(\""+emblem+"\")";$("class-emblem").style.maskImage="url(\""+emblem+"\")";
@@ -208,6 +211,39 @@ function finish(){
  show("result");
 }
 $("restart").onclick=()=>{current=0;chosen.fill(null);show("intro")};
-$("share").onclick=async()=>{const text="Мой результат теста «Какая ты мышь?»: "+$("race-name").textContent+" — "+$("class-name").textContent+". Узнай, кто ты в Королевстве Тихого Шелеста!";if(navigator.share){try{await navigator.share({title:"Какая ты мышь?",text,url:location.href})}catch(e){}}else if(navigator.clipboard){await navigator.clipboard.writeText(text+" "+location.href);$("share").textContent="Ссылка скопирована"}else{prompt("Скопируй результат:",text+" "+location.href)}};
+let preparedCardFile=null,preparedCardUrl=null;
+function loadCardImage(src){return new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=reject;img.src=src})}
+async function createShareCard(){
+ const race=$("race-name").textContent,klass=$("class-name").textContent;
+ const portrait=await loadCardImage("images/"+raceImages[race]);
+ const emblem=await loadCardImage("images/class-icons/"+classIcons[klass]);
+ const canvas=document.createElement("canvas");canvas.width=1080;canvas.height=1920;const ctx=canvas.getContext("2d");
+ ctx.fillStyle="#26382d";ctx.fillRect(0,0,1080,1920);
+ ctx.strokeStyle="#b18a4d";ctx.lineWidth=5;ctx.strokeRect(42,42,996,1836);ctx.strokeStyle="#e7dcc3";ctx.lineWidth=2;ctx.strokeRect(58,58,964,1804);
+ ctx.fillStyle="#f2ead8";ctx.fillRect(88,100,904,1720);
+ ctx.textAlign="center";ctx.fillStyle="#71805a";ctx.font="bold 30px Georgia";ctx.fillText("КОРОЛЕВСТВО ТИХОГО ШЕЛЕСТА",540,190);
+ ctx.fillStyle="#26382d";ctx.font="58px Georgia";ctx.fillText("КАКАЯ ТЫ МЫШЬ?",540,290);
+ ctx.fillStyle="#b18a4d";ctx.font="34px Georgia";ctx.fillText("ТВОЙ РЕЗУЛЬТАТ",540,365);
+ const maxW=640,maxH=760,scale=Math.min(maxW/portrait.width,maxH/portrait.height),pw=portrait.width*scale,ph=portrait.height*scale;
+ ctx.drawImage(portrait,540-pw/2,420+(maxH-ph)/2,pw,ph);
+ ctx.strokeStyle="#c9b995";ctx.lineWidth=4;ctx.strokeRect(540-pw/2,420+(maxH-ph)/2,pw,ph);
+ ctx.fillStyle="#71805a";ctx.font="bold 30px Georgia";ctx.fillText("ТВОЯ РАСА",540,1250);
+ ctx.fillStyle="#26382d";ctx.font="58px Georgia";ctx.fillText(race,540,1320);
+ const iconSize=180;ctx.drawImage(emblem,540-iconSize/2,1370,iconSize,iconSize);
+ ctx.fillStyle="#71805a";ctx.font="bold 30px Georgia";ctx.fillText("ТВОЙ КЛАСС",540,1600);
+ ctx.fillStyle="#26382d";ctx.font="58px Georgia";ctx.fillText(klass,540,1670);
+ ctx.fillStyle="#716b5b";ctx.font="27px Georgia";ctx.fillText("Пройди тест и узнай своё место в Шелесте",540,1755);
+ ctx.font="24px Arial";ctx.fillText("artemchisk.github.io/kakaya_ty_mysh",540,1790);
+ const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/png"));
+ if(!blob)throw new Error("Не удалось создать изображение");
+ preparedCardFile=new File([blob],"kakaya-ty-mysh-result.png",{type:"image/png"});
+ if(preparedCardUrl)URL.revokeObjectURL(preparedCardUrl);
+ preparedCardUrl=URL.createObjectURL(blob);
+ $("share-preview").src=preparedCardUrl;$("download-card").href=preparedCardUrl;
+ $("share-tools").classList.remove("hidden");$("share").classList.add("hidden");
+ $("share-status").textContent="Карточка готова. Нажми «Поделиться карточкой» и выбери историю или нужное приложение. Если такого пункта нет — сохрани картинку.";
+}
+$("share").onclick=async()=>{const button=$("share");button.disabled=true;button.textContent="Готовим карточку…";try{await createShareCard()}catch(e){$("share-status").textContent="Не удалось подготовить картинку. Попробуй ещё раз или обнови страницу.";button.disabled=false;button.textContent="Подготовить карточку"}};
+$("native-share").onclick=async()=>{if(!preparedCardFile)return;const payload={files:[preparedCardFile],title:"Мой результат — Какая ты мышь?",text:"Мой результат теста «Какая ты мышь?» — "+$("race-name").textContent+" и "+$("class-name").textContent+". "+location.href};if(navigator.share&&navigator.canShare&&navigator.canShare({files:payload.files})){try{await navigator.share(payload)}catch(e){if(e.name!=="AbortError")$("share-status").textContent="Не получилось открыть меню отправки. Сохрани картинку и добавь её в историю вручную."}}else{$("share-status").textContent="Браузер не поддерживает отправку картинки напрямую. Сохрани её кнопкой ниже и добавь в историю вручную.";if(navigator.clipboard?.writeText)navigator.clipboard.writeText(payload.text).catch(()=>{})}};
 </script>
 </body></html>
